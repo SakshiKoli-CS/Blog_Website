@@ -8,16 +8,16 @@
     "functions/*"
   ],
   "devDependencies": {
-    "turbo": "latest",
-    "typescript": "latest",
     "eslint": "latest",
-    "prettier": "latest"
+    "prettier": "latest",
+    "turbo": "latest",
+    "typescript": "latest"
   },
   "scripts": {
     "build": "turbo build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test"
-  }
+  },
+  "packageManager": "npm@10.9.2"
 }
-
