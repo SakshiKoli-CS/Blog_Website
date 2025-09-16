@@ -1,0 +1,23 @@
+{
+  "name": "blog-website",
+  "private": true,
+  "version": "0.0.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "functions/*"
+  ],
+  "devDependencies": {
+    "turbo": "latest",
+    "typescript": "latest",
+    "eslint": "latest",
+    "prettier": "latest"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  }
+}
+
