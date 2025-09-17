@@ -5,7 +5,6 @@ interface Post {
   title: string
   author: string
   post_type: string
-  [key: string]: any
 }
 
 async function getUpdates(): Promise<Post[]> {
