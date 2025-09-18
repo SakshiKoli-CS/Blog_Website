@@ -1,4 +1,4 @@
-import stack from '../../../lib/contentstack'
+import { Stack } from '../../../lib/contentstack'
 
 interface Post {
   uid: string
@@ -8,7 +8,7 @@ interface Post {
 }
 
 async function getClassics(): Promise<Post[]> {
-  const Query = stack.ContentType('news_post').Query()
+  const Query = Stack.ContentType('news_post').Query()
   Query.toJSON()
   const response = await Query.find()
   const entries: Post[] = response?.[0] || []

@@ -1,4 +1,4 @@
-import stack from '../../../lib/contentstack'
+import { Stack } from '../../../lib/contentstack'
 
 interface Post {
   uid: string
@@ -8,11 +8,23 @@ interface Post {
 }
 
 async function getLive(): Promise<Post[]> {
-  const Query = stack.ContentType('news_post').Query()
+  const Query = Stack.ContentType('news_post').Query()
   Query.toJSON()
   const response = await Query.find()
+  
+  console.log('Full response:', response)
+  console.log('Entries:', response?.[0])
+  
   const entries: Post[] = response?.[0] || []
-  return entries.filter((post) => post.post_type === 'Live')
+  console.log('All entries:', entries)
+  
+  const filtered = entries.filter((post) => {
+    console.log('Post type for', post.title, ':', post.post_type)
+    return post.post_type === 'Live'
+  })
+  
+  console.log('Filtered Live posts:', filtered)
+  return filtered
 }
 
 export default async function LivePage() {

@@ -1,15 +1,32 @@
 import * as contentstack from "contentstack";
+// import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
+export const Stack = contentstack.Stack({
+  api_key: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY!,
+  delivery_token: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN!,
+  environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT!,
+//   live_preview: {
+//     enable: true,
+//     management_token: process.env.NEXT_PUBLIC_CONTENTSTACK_MANAGEMENT_TOKEN!,
+//     host: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_HOST!,
+//   },
+// });
 
-console.log('Environment variables check:');
-console.log('API_KEY exists:', !!process.env.CONTENTSTACK_API_KEY);
-console.log('DELIVERY_TOKEN exists:', !!process.env.CONTENTSTACK_DELIVERY_TOKEN);
-console.log('ENVIRONMENT exists:', !!process.env.CONTENTSTACK_ENVIRONMENT);
+// if (process.env.NEXT_PUBLIC_CONTENTSTACK_LIVE_PREVIEW_HOST) {
+//   Stack.setHost(process.env.NEXT_PUBLIC_CONTENTSTACK_LIVE_PREVIEW_HOST!);
+// }
 
-const stack = contentstack.Stack({
-  api_key: process.env.CONTENTSTACK_API_KEY as string,
-  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN as string,
-  environment: process.env.CONTENTSTACK_ENVIRONMENT as string, 
+// ContentstackLivePreview.init({
+//   enable: true,
+//   stackSdk: Stack,
+//   ssr: true,
+//   clientUrlParams: {
+//     host: process.env.NEXT_PUBLIC_CONTENTSTACK_APP_HOST!,
+//   },
 });
 
-export default stack;
+
+
+
+
+
