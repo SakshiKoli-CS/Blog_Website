@@ -36,7 +36,7 @@ export async function getClassicsPosts() {
     Query.toJSON()
     const response = await Query.find()
     const entries = response?.[0] || []
-    return entries.filter((post: any) => post.post_type === 'Classics')
+    return entries.filter((post: any) => post.title?.includes('Healthcare'))
   } catch (error) {
     console.error('Error fetching classics:', error)
     return []
@@ -49,7 +49,7 @@ export async function getLivePosts() {
     Query.toJSON()
     const response = await Query.find()
     const entries = response?.[0] || []
-    return entries.filter((post: any) => post.post_type === 'Live')
+    return entries.filter((post: any) => post.title?.includes('Finance'))
   } catch (error) {
     console.error('Error fetching live posts:', error)
     return []
@@ -62,7 +62,7 @@ export async function getUpdatesPosts() {
     Query.toJSON()
     const response = await Query.find()
     const entries = response?.[0] || []
-    return entries.filter((post: any) => post.post_type === 'Updates')
+    return entries.filter((post: any) => post.title?.includes('Climate'))
   } catch (error) {
     console.error('Error fetching updates:', error)
     return []

@@ -10,7 +10,6 @@ interface BlogEntry {
   category: string
   image?: { url: string; title?: string }
   date?: string
-  tags?: string[]
 }
 
 export default async function UpdatesPage({
@@ -46,18 +45,6 @@ export default async function UpdatesPage({
             By {post.author} • {post.category}{" "}
             {post.date && `• ${new Date(post.date).toLocaleDateString()}`}
           </p>
-          {post.tags && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {post.tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
           <div
             className="prose mt-4"
             dangerouslySetInnerHTML={{ __html: post.content }}
