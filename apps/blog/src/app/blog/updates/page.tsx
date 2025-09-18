@@ -1,4 +1,4 @@
-import { getClimatePost } from "../../lib/contentstack";
+import { getClimatePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 
 interface BlogEntry {

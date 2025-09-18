@@ -1,4 +1,4 @@
-import { getHealthcarePost } from "../../lib/contentstack";
+import { getHealthcarePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 
 interface BlogEntry {

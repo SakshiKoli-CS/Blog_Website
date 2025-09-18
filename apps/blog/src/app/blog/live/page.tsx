@@ -1,4 +1,4 @@
-import { getFinancePost } from "../../lib/contentstack";
+import { getFinancePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 
 interface BlogEntry {

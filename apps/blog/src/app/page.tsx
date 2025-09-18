@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getHealthcarePost, getFinancePost, getClimatePost } from "./lib/contentstack";
+import { getHealthcarePost, getFinancePost, getClimatePost } from "@/app/lib/contentstack";
 
 export default async function Home() {
   const [healthcarePost, financePost, climatePost] = await Promise.all([
