@@ -1,56 +1,49 @@
-import { getClassicsPosts } from "../../../lib/contentstack"
-import { detectLocale } from "../../../lib/detectLocale"
-import Image from "next/image"
+import { getHealthcarePost } from "@/app/lib/contentstack";
+import Image from "next/image";
 
 interface BlogEntry {
-  title: string
-  url: string
-  content: string
-  author: string
-  category: string
-  image?: { url: string; title?: string }
-  date?: string
+  title: string;
+  url: string;
+  content: string;
+  author: string;
+  category: string;
+  image?: { url: string; title?: string };
+  date?: string;
 }
 
-export default async function ClassicsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string }>
-}) {
-  const { lang } = await searchParams
-  const locale = lang || (await detectLocale())
+export default async function ClassicsPage() {
+  const entry: BlogEntry | null = await getHealthcarePost();
 
-  const posts: BlogEntry[] = (await getClassicsPosts()) as BlogEntry[]
-
-  if (!posts.length) {
-    return <p className="text-center py-10 text-red-500">No Classics posts found.</p>
+  if (!entry) {
+    return <p className="text-center py-10 text-red-500">No Healthcare post found.</p>;
   }
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
       <h1 className="text-3xl font-bold mb-6">Classics</h1>
-      {posts.map((post) => (
-        <div key={post.url} className="mb-10 p-6 border rounded-lg shadow">
-          {post.image?.url && (
-            <Image
-              src={post.image.url}
-              alt={post.image.title || post.title}
-              width={1200}
-              height={500}
-              className="w-full h-64 object-cover rounded-xl"
-            />
-          )}
-          <h2 className="text-2xl font-semibold mt-4">{post.title}</h2>
-          <p className="text-gray-500 text-sm">
-            By {post.author} • {post.category}{" "}
-            {post.date && `• ${new Date(post.date).toLocaleDateString()}`}
-          </p>
-          <div
-            className="prose mt-4"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+      
+      <div className="mb-8 p-6 border rounded-lg shadow">
+        {entry.image?.url && (
+          <Image
+            src={entry.image.url}
+            alt={entry.image.title || entry.title}
+            width={1200}
+            height={500}
+            className="w-full h-64 object-cover rounded-xl mb-4"
           />
-        </div>
-      ))}
+        )}
+        
+        <h2 className="text-2xl font-semibold">{entry.title}</h2>
+        <p className="text-gray-500 text-sm mt-2">
+          By {entry.author} • {entry.category}
+          {entry.date && ` • ${new Date(entry.date).toLocaleDateString()}`}
+        </p>
+        
+        <div
+          className="prose mt-4"
+          dangerouslySetInnerHTML={{ __html: entry.content }}
+        />
+      </div>
     </div>
-  )
+  );
 }
