@@ -8,8 +8,8 @@ export default async function handler(request, context) {
   if (hostname.includes("blogwebsite-preview.devcontentstackapps.com")) {
     console.log("Preview domain detected - checking authentication");
 
-    const validUsername = context.env?.PREVIEW_USERNAME || "preview";
-    const validPassword = context.env?.PREVIEW_PASSWORD || "preview123";
+    const validUsername = context.env?.PREVIEW_USERNAME;
+    const validPassword = context.env?.PREVIEW_PASSWORD;
     const authHeader = request.headers.get("authorization");
 
     if (authHeader && authHeader.startsWith("Basic ")) {
