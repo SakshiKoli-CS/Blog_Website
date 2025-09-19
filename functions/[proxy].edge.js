@@ -7,6 +7,7 @@ export default async function handler(request, context) {
   const hostname = url.hostname;
   const pathname = url.pathname;
 
+  // IP-based access control for author tools
   if (pathname.startsWith("/author-tools")) {
     let clientIP = request.headers.get('x-forwarded-for') || 
                    request.headers.get('x-real-ip') || 
@@ -25,6 +26,19 @@ export default async function handler(request, context) {
     }
   }
 
+  // Single redirect (works on ALL domains)
+  if (pathname === "/blog/neuralink") {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        "Location": "/blog/classics",
+        "Cache-Control": "no-cache"
+      }
+    });
+  }
+
+
+  // Password protection for preview domain only
   if (hostname.includes("blogwebsite-preview.devcontentstackapps.com")) {
     const validUsername = context.env?.PREVIEW_USERNAME;
     const validPassword = context.env?.PREVIEW_PASSWORD;
