@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function AuthorTools() {
   return (
     <div style={{ padding: '20px' }}>
@@ -18,7 +20,7 @@ export default function AuthorTools() {
       </div>
 
       <div style={{ marginTop: '20px' }}>
-        <a href="/">← Back to Home</a>
+        <Link href="/">← Back to Home</Link>
       </div>
     </div>
   );
