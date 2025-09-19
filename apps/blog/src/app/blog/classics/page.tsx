@@ -12,7 +12,17 @@ interface BlogEntry {
 }
 
 export default async function ClassicsPage() {
+  // Test Log 4: Healthcare/Classics page loaded
+  console.log("🏥 Healthcare Classics page loaded - New Relic Test Log 4");
+  
   const entry: BlogEntry | null = await getHealthcarePost();
+
+  // Test Log 5: Healthcare post data fetched
+  console.log("📄 Healthcare post data fetched - New Relic Test Log 5", {
+    postFound: !!entry,
+    postTitle: entry?.title,
+    author: entry?.author
+  });
 
   if (!entry) {
     return <p className="text-center py-10 text-red-500">No Healthcare post found.</p>;
