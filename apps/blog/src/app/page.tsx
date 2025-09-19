@@ -114,10 +114,21 @@ export default async function Home() {
 
       {/* Footer */}
       <footer className="bg-white border-t">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center">
-          <p className="text-gray-600">
-            © 2025 AI Blog Hub. Powered by Contentstack & Next.js
-          </p>
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="text-center">
+            <p className="text-gray-600">
+              © 2025 AI Blog Hub. Powered by Contentstack & Next.js
+            </p>
+          </div>
+          <div className="mt-4 text-center">
+            <a 
+              href="/author-tools" 
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+              title="Author Tools (IP Restricted)"
+            >
+              Author Tools
+            </a>
+          </div>
         </div>
       </footer>
     </div>

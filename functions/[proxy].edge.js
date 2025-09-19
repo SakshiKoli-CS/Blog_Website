@@ -1,8 +1,30 @@
+const ALLOWED_IPS = [
+  "27.107.90.206"
+];
+
 export default async function handler(request, context) {
   const url = new URL(request.url);
   const hostname = url.hostname;
+  const pathname = url.pathname;
 
-  // Password protection for preview domain only
+  if (pathname.startsWith("/author-tools")) {
+    let clientIP = request.headers.get('x-forwarded-for') || 
+                   request.headers.get('x-real-ip') || 
+                   '127.0.0.1';
+    
+    if (clientIP.includes(',')) {
+      clientIP = clientIP.split(',')[0].trim();
+    }
+
+    if (!ALLOWED_IPS.includes(clientIP)) {
+      console.log("Blocked IP:", clientIP, "from accessing author-tools");
+      return new Response("Access Denied: Author Tools - IP not allowed", {
+        status: 403,
+        headers: { "Content-Type": "text/plain" },
+      });
+    }
+  }
+
   if (hostname.includes("blogwebsite-preview.devcontentstackapps.com")) {
     const validUsername = context.env?.PREVIEW_USERNAME;
     const validPassword = context.env?.PREVIEW_PASSWORD;
