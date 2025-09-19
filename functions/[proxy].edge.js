@@ -8,6 +8,7 @@ export default async function handler(request, context) {
   if (hostname.includes("blogwebsite-preview.devcontentstackapps.com")) {
     console.log("Preview domain detected - checking authentication");
 
+    const validUsername = context.env?.PREVIEW_USERNAME || "preview";
     const validPassword = context.env?.PREVIEW_PASSWORD || "preview123";
     const authHeader = request.headers.get("authorization");
 
@@ -16,16 +17,19 @@ export default async function handler(request, context) {
         const credentials = atob(authHeader.slice(6));
         const [username, password] = credentials.split(":");
 
-        if (password === validPassword) {
+        if (username === validUsername && password === validPassword) {
           console.log("Authentication successful");
-         
+          
         } else {
-          console.log("Invalid password");
-          return new Response("Unauthorized", {
+          console.log("Invalid credentials - username or password incorrect");
+          return new Response("Unauthorized - Invalid credentials", {
             status: 401,
             headers: {
-              "WWW-Authenticate": 'Basic realm="Preview Access"',
+              "WWW-Authenticate": `Basic realm="Preview Access - ${Date.now()}"`,
               "Content-Type": "text/plain",
+              "Cache-Control": "no-cache, no-store, must-revalidate",
+              "Pragma": "no-cache",
+              "Expires": "0",
             },
           });
         }
@@ -34,8 +38,11 @@ export default async function handler(request, context) {
         return new Response("Authentication Error", {
           status: 401,
           headers: {
-            "WWW-Authenticate": 'Basic realm="Preview Access"',
+            "WWW-Authenticate": `Basic realm="Preview Access - ${Date.now()}"`,
             "Content-Type": "text/plain",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
           },
         });
       }
@@ -44,8 +51,11 @@ export default async function handler(request, context) {
       return new Response("Authentication Required", {
         status: 401,
         headers: {
-          "WWW-Authenticate": 'Basic realm="Preview Access"',
+          "WWW-Authenticate": `Basic realm="Preview Access - ${Date.now()}"`,
           "Content-Type": "text/plain",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
+          "Expires": "0",
         },
       });
     }
