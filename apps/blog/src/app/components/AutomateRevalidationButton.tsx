@@ -14,17 +14,21 @@ export default function AutomateRevalidationButton({ page }: AutomateRevalidatio
     
     try {
      
-      const response = await fetch('/api/revalidate', {
+      const response = await fetch(`/api/revalidate?page=${page}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ page })
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.ok) {
-        setTimeout(() => window.location.reload(), 500);
+        const result = await response.json();
+        console.log(' Revalidation successful:', result);
+      
+        window.location.reload();
+      } else {
+        throw new Error('Revalidation failed');
       }
     } catch (error) {
-      console.error('Revalidation failed:', error);
+      console.error(' Revalidation failed:', error);
     } finally {
       setIsLoading(false);
     }

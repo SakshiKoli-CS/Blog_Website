@@ -3,47 +3,37 @@ import { revalidatePath } from 'next/cache';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log(' Revalidation API called via Contentstack Automate');
+    const { searchParams } = new URL(request.url);
+    const page = searchParams.get('page') || '/blog/classics';
     
-    const { path, page } = await request.json();
-    const targetPath = path || page || '/blog/classics';
+    console.log(` Revalidating: ${page}`);
     
-    console.log(` Revalidating path: ${targetPath}`);
+    revalidatePath(page);
     
-    revalidatePath(targetPath);
-    
-    if (targetPath.startsWith('/blog/')) {
+    if (page.startsWith('/blog/')) {
       revalidatePath('/');
-      console.log(' Also revalidated homepage');
     }
     
-    console.log(' Cache revalidation completed');
+    console.log(' Cache cleared successfully');
     
     return NextResponse.json({
-      success: true,
-      message: `Cache revalidated for ${targetPath}`,
-      timestamp: new Date().toISOString(),
-      revalidated: [targetPath, ...(targetPath.startsWith('/blog/') ? ['/'] : [])]
+      revalidated: true,
+      page,
+      timestamp: Date.now()
     });
     
   } catch (error) {
-    console.error(' Revalidation error:', error);
-    
+    console.error(' Revalidation failed:', error);
     return NextResponse.json(
-      { 
-        error: 'Cache revalidation failed',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      },
+      { error: 'Revalidation failed' },
       { status: 500 }
     );
   }
 }
 
-
 export async function GET() {
   return NextResponse.json({
     status: 'healthy',
-    endpoint: 'Cache revalidation API',
-    timestamp: new Date().toISOString()
+    endpoint: 'Cache revalidation API'
   });
 }
