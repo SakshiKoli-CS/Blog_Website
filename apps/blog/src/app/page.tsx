@@ -2,20 +2,11 @@ import Image from "next/image";
 import { getHealthcarePost, getFinancePost, getClimatePost } from "@/app/lib/contentstack";
 
 export default async function Home() {
-  
-  console.log(" Home page component loaded - New Relic Test Log 1");
-  
   const [healthcarePost, financePost, climatePost] = await Promise.all([
     getHealthcarePost(),
     getFinancePost(),
     getClimatePost()
   ]);
-
-  console.log(" Data fetching completed successfully - New Relic Test Log 2", {
-    healthcarePostTitle: healthcarePost?.title,
-    financePostTitle: financePost?.title,
-    climatePostTitle: climatePost?.title
-  });
 
   const blogSections = [
     {
