@@ -2,6 +2,8 @@ import { getHealthcarePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 import AutomateRevalidationButton from "@/app/components/AutomateRevalidationButton";
 
+export const revalidate = 3600;
+
 interface BlogEntry {
   title: string;
   url: string;

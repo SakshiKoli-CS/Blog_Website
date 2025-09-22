@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+export const revalidate = 86400;
+
 export default function AuthorTools() {
   return (
     <div style={{ padding: '20px' }}>

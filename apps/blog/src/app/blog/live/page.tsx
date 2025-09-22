@@ -1,6 +1,8 @@
 import { getFinancePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 
+export const revalidate = 300;
+
 interface BlogEntry {
   title: string;
   url: string;
