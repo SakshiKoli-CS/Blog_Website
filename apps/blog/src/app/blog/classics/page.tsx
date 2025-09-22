@@ -1,5 +1,6 @@
 import { getHealthcarePost } from "@/app/lib/contentstack";
 import Image from "next/image";
+import AutomateRevalidationButton from "@/app/components/AutomateRevalidationButton";
 
 interface BlogEntry {
   title: string;
@@ -96,6 +97,8 @@ export default async function ClassicsPage() {
               className="prose prose-lg prose-blue max-w-none leading-relaxed text-gray-700"
               dangerouslySetInnerHTML={{ __html: entry.content }}
             />
+            
+            <AutomateRevalidationButton page="/blog/classics" />
           </div>
         </div>
       </div>
