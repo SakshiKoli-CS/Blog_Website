@@ -10,25 +10,38 @@ export default function AutomateRevalidationButton({ page }: AutomateRevalidatio
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRevalidate = async () => {
+    console.log(' Button clicked! Page prop:', page);
     setIsLoading(true);
     
     try {
-     
-      const response = await fetch(`/api/revalidate?page=${page}`, {
+      const url = `/api/revalidate?page=${page}`;
+      console.log(' Calling URL:', url);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
 
+      console.log(' Response status:', response.status);
+      console.log(' Response ok:', response.ok);
+
       if (response.ok) {
         const result = await response.json();
         console.log(' Revalidation successful:', result);
-      
-        window.location.reload();
+        
+        // Add alert to confirm it worked
+        alert(`Cache revalidated for ${result.page}!`);
+        
+        // Reload to show fresh content
+        setTimeout(() => window.location.reload(), 1000);
       } else {
-        throw new Error('Revalidation failed');
+        const errorData = await response.text();
+        console.error(' Response error:', errorData);
+        throw new Error(`Revalidation failed: ${response.status}`);
       }
     } catch (error) {
       console.error(' Revalidation failed:', error);
+      alert(`Error: ${error instanceof Error ? error.message : 'Revalidation failed'}`);
     } finally {
       setIsLoading(false);
     }
