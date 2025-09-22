@@ -3,8 +3,6 @@
     "cachePriming": {
       "urls": [
         "/",
-        "/blog/classics",
-        "/blog/live",
         "/test-cache-primed"
       ]
     }
