@@ -32,8 +32,10 @@ export default function AutomateRevalidationButton({ page }: AutomateRevalidatio
         // Add alert to confirm it worked
         alert(`Cache revalidated for ${result.page}!`);
         
-        // Reload to show fresh content
-        setTimeout(() => window.location.reload(), 1000);
+        // Force hard refresh to bypass all caches
+        setTimeout(() => {
+          window.location.href = window.location.href + `?t=${Date.now()}`;
+        }, 1000);
       } else {
         const errorData = await response.text();
         console.error(' Response error:', errorData);

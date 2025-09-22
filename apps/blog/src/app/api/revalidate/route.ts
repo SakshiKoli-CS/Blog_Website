@@ -11,11 +11,9 @@ export async function POST(request: NextRequest) {
     console.log(` Page parameter received: "${page}"`);
     console.log(` Starting revalidation for: ${page}`);
     
-    // Clear Next.js cache
     revalidatePath(page);
     console.log(` revalidatePath("${page}") completed`);
     
-    // Also clear homepage if it's a blog page
     if (page.startsWith('/blog/')) {
       revalidatePath('/');
       console.log(` revalidatePath("/") also completed`);
@@ -30,7 +28,18 @@ export async function POST(request: NextRequest) {
     
     console.log(' Sending response:', response);
     
-    return NextResponse.json(response);
+    const nextResponse = NextResponse.json(response);
+    
+    nextResponse.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    nextResponse.headers.set('Pragma', 'no-cache');
+    nextResponse.headers.set('Expires', '0');
+    nextResponse.headers.set('X-Cache-Clear', 'true');
+    
+   
+    nextResponse.headers.set('CF-Cache-Control', 'no-cache');
+    nextResponse.headers.set('CDN-Cache-Control', 'no-cache');
+    
+    return nextResponse;
     
   } catch (error) {
     console.error(' Revalidation failed:', error);
