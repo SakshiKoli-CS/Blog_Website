@@ -35,6 +35,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Log folders
+logs/
+*.log
+
 # Deployment
 .vercel
 
