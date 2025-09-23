@@ -1,18 +1,35 @@
 image: node:18
 
+# Define reusable script sections
+definitions:
+  scripts:
+    - &install-and-build
+      - echo "Installing dependencies..."
+      - npm ci
+      - echo "Running build..."
+      - npm run build
+      - echo "Running linting..."
+      - npm run lint
+    - &setup-contentstack
+      - echo "Installing CLI tools..."
+      - npm install -g @contentstack/cli
+      - npm install otplib
+      - echo "Setting Launch region to dev11..."
+      - csdx config:set:region --name dev11 --cma https://dev11-api.csnonprod.com --cda https://dev11-cdn.csnonprod.com --ui-host https://dev11-app.csnonprod.com --launch https://dev-launch-api.csnonprod.com
+      - echo "Logging in to Contentstack..."
+      - node csdx-login.js
+      - echo "Verifying login..."
+      - csdx auth:whoami
+  caches:
+    node: node_modules
+
 pipelines:
   default:
     - step:
         name: Build and Test
         caches:
           - node
-        script:
-          - echo "Installing dependencies..."
-          - npm ci
-          - echo "Running build..."
-          - npm run build
-          - echo "Running linting..."
-          - npm run lint
+        script: *install-and-build
         artifacts:
           - apps/blog/.next/**
           - apps/blog/out/**
@@ -20,90 +37,40 @@ pipelines:
   branches:
     main:
       - step:
-          name: Deploy to Contentstack Launch
-          deployment: production
+          name: Build and Test
           caches:
             - node
+          script: *install-and-build
+          artifacts:
+            - apps/blog/.next/**
+            - apps/blog/out/**
+      - step:
+          name: Deploy to Production
+          deployment: production
           script:
-            - echo "=== Deploy to Launch ==="
-            
-            # Check for .cs-launch file
-            - echo "Current directory:"
-            - pwd
-            - echo "Files including dotfiles:"
-            - ls -la
-            
-            # Install dependencies
-            - echo "Installing dependencies..."
-            - npm install
-            
-            # Build the project
-            - echo "Building the project..."
-            - npm run build
-            
-            # Show latest commit ID and message
-            - echo "Latest Commit ID:"
-            - git log -1 --pretty=format:"%H"
-            - echo ""
-            - echo "Latest Commit Message:"
-            - git log -1 --pretty=format:"%s"
-            
-            # Install CLI tools
-            - echo "Installing CLI tools..."
-            - npm install -g @contentstack/cli
-            - npm install otplib
-            
-            # Verify Contentstack CLI Installation
-            - echo "Verifying CLI installation..."
-            - csdx --version
-            
-            # Set Launch Region
-            - echo "Setting Launch region to dev11..."
-            - csdx config:set:region --name dev11 --cma https://dev11-api.csnonprod.com --cda https://dev11-cdn.csnonprod.com --ui-host https://dev11-app.csnonprod.com --launch https://dev-launch-api.csnonprod.com
-            
-            # Login to Contentstack via CSDX CLI
-            - echo "Logging in to Contentstack..."
-            - node csdx-login.js
-            
-            # Verify CSDX Login
-            - echo "Verifying login..."
-            - csdx auth:whoami
-            
-            # Deploy using Launch config
+            - echo "=== Deploy to Launch Production ==="
+            - echo "Current directory:" && pwd
+            - echo "Files including dotfiles:" && ls -la
+            - echo "Latest Commit:" && git log -1 --pretty=format:"%H - %s"
+            - *setup-contentstack
             - echo "Deploying to Launch..."
             - csdx launch --redeploy-latest
-            
-            - echo "Deployment completed successfully!"
+            - echo "Production deployment completed!"
             
     develop:
       - step:
           name: Build and Test
           caches:
             - node
-          script:
-            - echo "Installing dependencies..."
-            - npm ci
-            - echo "Running build..."
-            - npm run build
-            - echo "Running linting..."
-            - npm run lint
+          script: *install-and-build
           artifacts:
             - apps/blog/.next/**
       - step:
-          name: Deploy to Launch Staging
+          name: Deploy to Staging
           deployment: staging
-          caches:
-            - node
           script:
             - echo "=== Deploy to Launch Staging ==="
-            - npm install
-            - npm run build
-            - npm install -g @contentstack/cli
-            - npm install otplib
-            - echo "Setting Launch region to dev11..."
-            - csdx config:set:region --name dev11 --cma https://dev11-api.csnonprod.com --cda https://dev11-cdn.csnonprod.com --ui-host https://dev11-app.csnonprod.com --launch https://dev-launch-api.csnonprod.com
-            - node csdx-login.js
-            - csdx auth:whoami
+            - *setup-contentstack
             - csdx launch --redeploy-latest --environment staging
             - echo "Staging deployment completed!"
 
@@ -113,26 +80,4 @@ pipelines:
           name: Build and Test PR
           caches:
             - node
-          script:
-            - echo "Installing dependencies..."
-            - npm ci
-            - echo "Running build..."
-            - npm run build
-            - echo "Running linting..."
-            - npm run lint
-
-definitions:
-  caches:
-    node: node_modules
-
-# Environment Variables to set in Bitbucket Repository Settings:
-# CSDX_EMAIL: Your Contentstack account email
-# CSDX_PASSWORD: Your Contentstack account password
-# CSDX_TOTP_SECRET: Your TOTP secret for 2FA
-# 
-# Alternative (More Reliable for dev11):
-# CSDX_MANAGEMENT_TOKEN: Your management token from dev11-app.csnonprod.com
-# 
-# Optional environment flags:
-# Add --environment EnvironmentName if you have different environments
-# Add --config Path_to_launch_config_file if .cs-launch.json is not in root
+          script: *install-and-build
