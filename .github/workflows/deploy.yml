@@ -48,7 +48,7 @@ jobs:
         run: csdx --version
 
       - name: Set Launch Region
-        run: csdx config:set:region AWS-NA
+        run: csdx  config:set:region --name dev11 --cma https://dev11-api.csnonprod.com --cda https://dev11-cdn.csnonprod.com --ui-host https://dev11-app.csnonprod.com --launch https://dev-launch-api.csnonprod.com
 
       - name: Login to Contentstack via CSDX CLI
         env:
