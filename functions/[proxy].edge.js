@@ -89,5 +89,14 @@ export default async function handler(request, context) {
     }
   }
 
+  // URL Rewrites
+  if (pathname === "/latest") {
+ 
+    if (hostname === "blogwebsite.devcontentstackapps.com") {
+      const rewriteUrl = new URL("/blog?page=1", url.origin);
+      return fetch(new Request(rewriteUrl.href, request));
+    }
+  }
+
   return fetch(request);
 }
