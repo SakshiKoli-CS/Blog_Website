@@ -1,60 +1,12 @@
 {
-  "main": {
-    "uid": "68d2ecac8ba492cde5168e6d",
-    "name": "BlogWebsite",
-    "projectType": "GITPROVIDER",
-    "organizationUid": "blte5c2b61e175773e7",
-    "environments": [
-      {
-        "uid": "68d2ecac8ba492cde5168e74",
-        "name": "Production",
-        "frameworkPreset": "NEXTJS",
-        "__typename": "Environment"
-      }
-    ],
-    "repository": {
-      "username": "SakshiKoli-CS",
-      "repositoryName": "SakshiKoli-CS/Blog_Website",
-      "gitProviderMetadata": {
-        "gitProvider": "GitHub",
-        "__typename": "GitHubMetadata"
-      },
-      "__typename": "Repository"
-    },
-    "__typename": "Project",
-    "deployments": [
-      {
-        "uid": "68d2ecad8ba492cde5168e7f",
-        "status": "QUEUED",
-        "commitUrl": "https://github.com/SakshiKoli-CS/Blog_Website/commit/409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "createdAt": "2025-09-23T18:53:33.378Z",
-        "updatedAt": "2025-09-23T18:53:33.387Z",
-        "deploymentUrl": "blogwebsite-60ed87.contentstackapps.com",
-        "commitHash": "409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "commitMessage": "update .yml file",
-        "__typename": "Deployment"
-      },
-      {
-        "uid": "68d362e2026288eab53e9163",
-        "status": "QUEUED",
-        "commitUrl": "https://github.com/SakshiKoli-CS/Blog_Website/commit/409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "createdAt": "2025-09-24T03:17:54.345Z",
-        "updatedAt": "2025-09-24T03:17:54.345Z",
-        "commitHash": "409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "commitMessage": "update .yml file",
-        "deploymentUrl": "blogwebsite-60ed87.contentstackapps.com",
-        "__typename": "Deployment"
-      }
-    ]
-  },
   "project": {
-    "uid": "68d2ecac8ba492cde5168e6d",
-    "name": "BlogWebsite",
+    "uid": "68c9bb396f4e320f0abc7681",
+    "name": "Blog_Website",
     "projectType": "GITPROVIDER",
-    "organizationUid": "blte5c2b61e175773e7",
+    "organizationUid": "blt8ca9ce72e25d0172",
     "environments": [
       {
-        "uid": "68d2ecac8ba492cde5168e74",
+        "uid": "68cc54c8950a4f056b5858a1",
         "name": "Production",
         "frameworkPreset": "NEXTJS",
         "__typename": "Environment"
@@ -71,26 +23,16 @@
     },
     "__typename": "Project",
     "deployments": [
+      {},
       {
-        "uid": "68d2ecad8ba492cde5168e7f",
+        "uid": "68d3deed172fb37908794d03",
         "status": "QUEUED",
-        "commitUrl": "https://github.com/SakshiKoli-CS/Blog_Website/commit/409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "createdAt": "2025-09-23T18:53:33.378Z",
-        "updatedAt": "2025-09-23T18:53:33.387Z",
-        "deploymentUrl": "blogwebsite-60ed87.contentstackapps.com",
-        "commitHash": "409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "commitMessage": "update .yml file",
-        "__typename": "Deployment"
-      },
-      {
-        "uid": "68d362e2026288eab53e9163",
-        "status": "QUEUED",
-        "commitUrl": "https://github.com/SakshiKoli-CS/Blog_Website/commit/409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "createdAt": "2025-09-24T03:17:54.345Z",
-        "updatedAt": "2025-09-24T03:17:54.345Z",
-        "commitHash": "409e6c219492a78d0d2b0a5f45614c210ba90618",
-        "commitMessage": "update .yml file",
-        "deploymentUrl": "blogwebsite-60ed87.contentstackapps.com",
+        "commitUrl": "https://github.com/SakshiKoli-CS/Blog_Website/commit/743ea5d56540cb8242f335d650930ab3cd3dd65e",
+        "createdAt": "2025-09-24T12:07:09.307Z",
+        "updatedAt": "2025-09-24T12:07:09.307Z",
+        "commitHash": "743ea5d56540cb8242f335d650930ab3cd3dd65e",
+        "commitMessage": "remove ls - la from .yml",
+        "deploymentUrl": "blogwebsite.devcontentstackapps.com",
         "__typename": "Deployment"
       }
     ]
