@@ -10,16 +10,6 @@ definitions:
       - npm run build
       - echo "Running linting..."
       - npm run lint
-    - &setup-contentstack
-      - echo "Installing CLI tools..."
-      - npm install -g @contentstack/cli
-      - npm install otplib
-      - echo "Setting Launch region to dev11..."
-      - csdx config:set:region --name dev11 --cma https://dev11-api.csnonprod.com --cda https://dev11-cdn.csnonprod.com --ui-host https://dev11-app.csnonprod.com --launch https://dev-launch-api.csnonprod.com
-      - echo "Logging in to Contentstack..."
-      - node csdx-login.js
-      - echo "Verifying login..."
-      - csdx auth:whoami
   caches:
     node: node_modules
 
@@ -30,9 +20,6 @@ pipelines:
         caches:
           - node
         script: *install-and-build
-        artifacts:
-          - apps/blog/.next/**
-          - apps/blog/out/**
 
   branches:
     main:
@@ -41,43 +28,22 @@ pipelines:
           caches:
             - node
           script: *install-and-build
-          artifacts:
-            - apps/blog/.next/**
-            - apps/blog/out/**
       - step:
           name: Deploy to Production
           deployment: production
           script:
             - echo "=== Deploy to Launch Production ==="
-            - echo "Current directory:" && pwd
-            - echo "Files including dotfiles:" && ls -la
             - echo "Latest Commit:" && git log -1 --pretty=format:"%H - %s"
-            - *setup-contentstack
+            - echo "Installing CLI tools..."
+            - npm install -g @contentstack/cli
+            - npm install otplib
+            - echo "Setting Launch region to AWS-NA..."
+            - csdx config:set:region AWS-NA
+            - echo "Logging in to Contentstack..."
+            - node csdx-login.js
+            - echo "Verifying login..."
+            - csdx auth:whoami
             - echo "Deploying to Launch..."
             - csdx launch --redeploy-latest
             - echo "Production deployment completed!"
-            
-    develop:
-      - step:
-          name: Build and Test
-          caches:
-            - node
-          script: *install-and-build
-          artifacts:
-            - apps/blog/.next/**
-      - step:
-          name: Deploy to Staging
-          deployment: staging
-          script:
-            - echo "=== Deploy to Launch Staging ==="
-            - *setup-contentstack
-            - csdx launch --redeploy-latest --environment staging
-            - echo "Staging deployment completed!"
 
-  pull-requests:
-    '**':
-      - step:
-          name: Build and Test PR
-          caches:
-            - node
-          script: *install-and-build
