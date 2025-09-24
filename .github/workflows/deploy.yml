@@ -61,7 +61,7 @@ jobs:
         run: csdx auth:whoami
 
       - name: Deploy using Launch config
-        run: csdx launch --redeploy-latest --environment production
+        run: csdx launch --redeploy-latest --environment Production
           
         # ADD ENVIRONMENT FLAG IF YOU HAVE DIFFERENT ENVIRONMENT AND YOU WANT TO DEPLOY IN THE SPECIFIC ENVIRONMENT
         # --environment EnvironmentName 
