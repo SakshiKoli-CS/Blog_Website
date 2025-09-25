@@ -1,3 +1,5 @@
+import { processRewrites } from '../apps/blog/src/app/lib/rewrite.js';
+
 const ALLOWED_IPS = [
   "27.107.90.206"
 ];
@@ -90,13 +92,27 @@ export default async function handler(request, context) {
   }
 
   // URL Rewrites
-  if (pathname === "/latest") {
- 
-    if (hostname === "blogwebsite.devcontentstackapps.com") {
-      const rewriteUrl = new URL("/blog?page=1", url.origin);
-      return fetch(new Request(rewriteUrl.href, request));
-    }
-  }
+  const rewrites = [
+    {
+      source: "/latest",
+      destination: "/blog/latest",
+      onlyOnProd: true,
+    },
+    {
+      source: "/blog",
+      destination: "/blog/latest",
+      onlyOnProd: true,
+    },
+    {
+      source: "/blog",
+      destination: "/404",
+      onlyOnPreview: true,
+    },
+    // Add more sophisticated rewrite rules here as needed
+  ];
+
+  const rewriteResponse = await processRewrites(rewrites, request);
+  if (rewriteResponse) return rewriteResponse;
 
   return fetch(request);
 }
