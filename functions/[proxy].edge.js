@@ -39,7 +39,8 @@ function verifyJWT(token, secret) {
 }
 
 const ALLOWED_IPS = [
-  "27.107.90.206"
+  "27.107.90.206",  // Office IP
+  "45.115.187.118"  // Home IP
 ];
 
 export default async function handler(request, context) {
