@@ -8,8 +8,10 @@
     "functions/*"
   ],
   "devDependencies": {
+    "@types/node": "^24.5.2",
     "eslint": "latest",
     "prettier": "latest",
+    "ts-node": "^10.9.2",
     "turbo": "latest",
     "typescript": "latest"
   },
@@ -18,9 +20,8 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "generate-launch-json": "ts-node scripts/generateLaunchJson.ts",
-    "prebuild": "npm run generate:launch"
-
+    "generate-launch-json": "ts-node --project tsconfig.scripts.json scripts/generateLaunchJson.ts",
+    "prebuild": "npm run generate-launch-json"
   },
   "packageManager": "npm@10.9.2",
   "dependencies": {

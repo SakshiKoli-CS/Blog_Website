@@ -18,11 +18,10 @@ async function generateLaunchJson() {
     const newspost = await fetchEntries("news_post");
 
     const launchJson: any = {};
-
     const cacheUrls: string[] = [];
 
     for (const news_post of newspost) {
-      const cachePrimingUrls = newspost.cache?.cachepriming?.urls;
+      const cachePrimingUrls = news_post.cache?.cachepriming?.urls;
 
       if (
         cachePrimingUrls &&
@@ -34,9 +33,7 @@ async function generateLaunchJson() {
         );
 
         if (validUrls.length > 0) {
-          console.log(
-            `Found cache priming URLs in blog post: "${news_post.title}"`
-          );
+          console.log(` Cache priming URLs from "${news_post.title}":`, validUrls);
           cacheUrls.push(...validUrls);
         }
       }
@@ -56,11 +53,11 @@ async function generateLaunchJson() {
     fs.writeFileSync(filePath, JSON.stringify(launchJson, null, 2));
 
     console.log(
-      "launch.json generated:\n",
+      " launch.json generated:\n",
       JSON.stringify(launchJson, null, 2)
     );
   } catch (error) {
-    console.error("Error generating launch.json:", error);
+    console.error(" Error generating launch.json:", error);
     process.exit(1);
   }
 }
