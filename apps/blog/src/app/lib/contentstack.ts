@@ -25,6 +25,18 @@ export async function getHealthcarePost() {
   }
 }
 
+export async function getCachePrimePost() {
+  try {
+    const Query = Stack.ContentType('news_post').Query();
+    Query.where("url", "/blog/cacheprime").language("en-us");
+    const response = await Query.toJSON().find();
+    return response?.[0]?.[0] || null;
+  } catch (error) {
+    console.error('Error fetching cacheprime post:', error);
+    return null;
+  }
+}
+
 export async function getFinancePost() {
   try {
     const Query = Stack.ContentType('news_post').Query();

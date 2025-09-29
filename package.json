@@ -17,10 +17,14 @@
     "build": "turbo build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "generate-launch-json": "ts-node scripts/generateLaunchJson.ts",
+    "prebuild": "npm run generate:launch"
+
   },
   "packageManager": "npm@10.9.2",
   "dependencies": {
+    "dotenv": "^17.2.2",
     "otplib": "^12.0.1"
   }
 }
