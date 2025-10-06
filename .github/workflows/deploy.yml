@@ -64,11 +64,8 @@ jobs:
       - name: Verify CSDX Login
         run: csdx auth:whoami
 
-      - name: Deploy using Launch config
-        run: csdx launch --redeploy-latest
-          
-        # ADD ENVIRONMENT FLAG IF YOU HAVE DIFFERENT ENVIRONMENT AND YOU WANT TO DEPLOY IN THE SPECIFIC ENVIRONMENT
-        # --environment EnvironmentName 
+      - name: Deploy to Production environment
+        run: csdx launch --redeploy-latest --environment Default
 
-        # ADD CONFIG FLAG IF YOU .cs-launch.json IS NOT IN THE ROOT DIRECTORY
-        # --config Path_to_launch_config_file
+      - name: Deploy to Default environment
+        run: csdx launch --redeploy-latest --environment Production
