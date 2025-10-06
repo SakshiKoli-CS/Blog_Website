@@ -17,9 +17,10 @@ interface BlogEntry {
 export default async function ClassicsPage({ 
   searchParams 
 }: { 
-  searchParams: { lang?: string } 
+  searchParams: Promise<{ lang?: string }> 
 }) {
-  const locale = searchParams.lang || "en-us";
+  const resolvedSearchParams = await searchParams;
+  const locale = resolvedSearchParams.lang || "en-us";
   const entry: BlogEntry | null = await getHealthcarePost(locale);
 
   if (!entry) {
