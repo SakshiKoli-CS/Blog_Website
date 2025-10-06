@@ -55,11 +55,12 @@ export default async function handler(request, context) {
   const country = request.headers.get("CF-IPCountry") || request.headers.get("visitor-ip-country");
   const region = request.headers.get("CF-Region") || request.headers.get("visitor-ip-region");
   const city = request.headers.get("CF-City") || request.headers.get("visitor-ip-city");
-  const clientIP = request.headers.get("x-forwarded-for") || "127.0.0.1";
 
-  console.log(
-    `Visitor Location: Country=${country || "Unknown"}, Region=${region || "Unknown"}, City=${city || "Unknown"}, IP=${clientIP}`
-  );
+  if (!pathname.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
+    console.log(
+      `Visitor Location: Country=${country || "Unknown"}, Region=${region || "Unknown"}, City=${city || "Unknown"}`
+    );
+  }
 
   const localeMapByCountry = {
     FR: "fr-fr",
@@ -103,7 +104,6 @@ export default async function handler(request, context) {
       country,
       region,
       city,
-      clientIP,
       currentLang,
       timestamp: new Date().toISOString()
     }, null, 2), {
