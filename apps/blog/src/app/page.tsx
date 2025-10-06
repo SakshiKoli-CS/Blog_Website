@@ -1,11 +1,19 @@
 import Image from "next/image";
 import { getHealthcarePost, getFinancePost, getClimatePost } from "@/app/lib/contentstack";
+import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
-export default async function Home() {
+export default async function Home({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ lang?: string }> 
+}) {
+  const resolvedSearchParams = await searchParams;
+  const locale = resolvedSearchParams.lang || "en-us";
+  
   const [healthcarePost, financePost, climatePost] = await Promise.all([
-    getHealthcarePost(),
-    getFinancePost(),
-    getClimatePost()
+    getHealthcarePost(locale),
+    getFinancePost(locale),  
+    getClimatePost(locale)
   ]);
 
   const blogSections = [
@@ -40,9 +48,12 @@ export default async function Home() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            AI Blog Hub
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              AI Blog Hub
+            </h1>
+            <LanguageSwitcher />
+          </div>
         </div>
       </header>
 

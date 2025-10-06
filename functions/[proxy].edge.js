@@ -64,7 +64,6 @@ export default async function handler(request, context) {
 
   const localeMapByCountry = {
     FR: "fr-fr",
-    JP: "ja-jp",
     US: "en-us",
     CA: "en-us",
     GB: "en-us",
@@ -86,7 +85,6 @@ export default async function handler(request, context) {
       detectedLocale = localeMapByCountry[country];
     } else if (browserLang) {
       if (browserLang.startsWith("fr")) detectedLocale = "fr-fr";
-      else if (browserLang.startsWith("ja")) detectedLocale = "ja-jp";
       else if (browserLang.startsWith("en")) detectedLocale = "en-us";
     }
 

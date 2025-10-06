@@ -1,6 +1,7 @@
 import { getHealthcarePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 import AutomateRevalidationButton from "@/app/components/AutomateRevalidationButton";
+import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
 export const revalidate = 3600;
 
@@ -36,11 +37,14 @@ export default async function ClassicsPage({
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               AI Blog
             </h1>
-            <nav className="flex space-x-6">
-              <a href="/blog/classics" className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">Classics</a>
-              <a href="/blog/live" className="text-gray-600 hover:text-blue-600 transition-colors">Live</a>
-              <a href="/blog/updates" className="text-gray-600 hover:text-blue-600 transition-colors">Updates</a>
-            </nav>
+            <div className="flex items-center space-x-6">
+              <nav className="flex space-x-6">
+                <a href="/blog/classics" className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">Classics</a>
+                <a href="/blog/live" className="text-gray-600 hover:text-blue-600 transition-colors">Live</a>
+                <a href="/blog/updates" className="text-gray-600 hover:text-blue-600 transition-colors">Updates</a>
+              </nav>
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>

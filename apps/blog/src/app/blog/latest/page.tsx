@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
 export default function BlogLatestPage() {
   const latestPosts = [
@@ -10,7 +11,10 @@ export default function BlogLatestPage() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Latest Posts</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <h1>Latest Posts</h1>
+        <LanguageSwitcher />
+      </div>
       
       <div style={{ marginTop: '20px' }}>
         {latestPosts.map((post) => (

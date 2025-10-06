@@ -1,5 +1,6 @@
 import { getClimatePost } from "@/app/lib/contentstack";
 import Image from "next/image";
+import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
 interface BlogEntry {
   title: string;
@@ -33,11 +34,14 @@ export default async function UpdatesPage({
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               AI Blog
             </h1>
-            <nav className="flex space-x-6">
-              <a href="/blog/classics" className="text-gray-600 hover:text-purple-600 transition-colors">Classics</a>
-              <a href="/blog/live" className="text-gray-600 hover:text-purple-600 transition-colors">Live</a>
-              <a href="/blog/updates" className="text-purple-600 font-semibold border-b-2 border-purple-600 pb-1">Updates</a>
-            </nav>
+            <div className="flex items-center space-x-6">
+              <nav className="flex space-x-6">
+                <a href="/blog/classics" className="text-gray-600 hover:text-purple-600 transition-colors">Classics</a>
+                <a href="/blog/live" className="text-gray-600 hover:text-purple-600 transition-colors">Live</a>
+                <a href="/blog/updates" className="text-purple-600 font-semibold border-b-2 border-purple-600 pb-1">Updates</a>
+              </nav>
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>
