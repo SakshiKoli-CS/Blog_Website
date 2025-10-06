@@ -11,8 +11,13 @@ interface BlogEntry {
   date?: string;
 }
 
-export default async function UpdatesPage() {
-  const entry: BlogEntry | null = await getClimatePost();
+export default async function UpdatesPage({ 
+  searchParams 
+}: { 
+  searchParams: { lang?: string } 
+}) {
+  const locale = searchParams.lang || "en-us";
+  const entry: BlogEntry | null = await getClimatePost(locale);
 
   if (!entry) {
     return <p className="text-center py-10 text-red-500">No Climate post found.</p>;
