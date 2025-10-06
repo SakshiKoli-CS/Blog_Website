@@ -13,10 +13,10 @@ if (process.env.NEXT_PUBLIC_CONTENTSTACK_API_HOST) {
 } 
 
 
-export async function getHealthcarePost() {
+export async function getHealthcarePost(locale = "en-us") {
   try {
     const Query = Stack.ContentType('news_post').Query();
-    Query.where("url", "/news/ai-healthcare").language("en-us");
+    Query.where("url", "/news/ai-healthcare").language(locale);
     const response = await Query.toJSON().find();
     return response?.[0]?.[0] || null;
   } catch (error) {
@@ -25,10 +25,10 @@ export async function getHealthcarePost() {
   }
 }
 
-export async function getCachePrimePost() {
+export async function getCachePrimePost(locale = "en-us") {
   try {
     const Query = Stack.ContentType('news_post').Query();
-    Query.where("url", "/blog/cacheprime").language("en-us");
+    Query.where("url", "/blog/cacheprime").language(locale);
     const response = await Query.toJSON().find();
     return response?.[0]?.[0] || null;
   } catch (error) {
@@ -37,10 +37,10 @@ export async function getCachePrimePost() {
   }
 }
 
-export async function getFinancePost() {
+export async function getFinancePost(locale = "en-us") {
   try {
     const Query = Stack.ContentType('news_post').Query();
-    Query.where("url", "/news/ai-finance").language("en-us");
+    Query.where("url", "/news/ai-finance").language(locale);
     const response = await Query.toJSON().find();
     return response?.[0]?.[0] || null;
   } catch (error) {
@@ -49,10 +49,10 @@ export async function getFinancePost() {
   }
 }
 
-export async function getClimatePost() {
+export async function getClimatePost(locale = "en-us") {
   try {
     const Query = Stack.ContentType('news_post').Query();
-    Query.where("url", "/news/ai-climate").language("en-us");
+    Query.where("url", "/news/ai-climate").language(locale);
     const response = await Query.toJSON().find();
     return response?.[0]?.[0] || null;
   } catch (error) {
