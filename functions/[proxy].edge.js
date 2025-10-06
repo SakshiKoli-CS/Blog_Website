@@ -43,123 +43,7 @@ const ALLOWED_IPS = [
   "45.115.187.118"  // Home IP
 ];
 
-// Geo-Location and Locale Detection functions
-function getGeoLocation(request) {
-  const geoInfo = {
-    country: request.headers.get('CF-IPCountry') || request.headers.get('x-country-code') || 'Unknown',
-    region: request.headers.get('CF-Region') || request.headers.get('x-region') || 'Unknown',
-    city: request.headers.get('CF-City') || request.headers.get('x-city') || 'Unknown'
-  };
-  
-  return geoInfo;
-}
-
-function detectLocale(request, geoInfo) {
-  // Get Accept-Language header
-  const acceptLanguage = request.headers.get('Accept-Language') || '';
-  
-  // Parse Accept-Language header
-  const languages = acceptLanguage
-    .split(',')
-    .map(lang => {
-      const [code, qValue] = lang.trim().split(';q=');
-      return {
-        code: code.trim(),
-        quality: qValue ? parseFloat(qValue) : 1.0
-      };
-    })
-    .sort((a, b) => b.quality - a.quality);
-  
-  // Simplified country-based locale mapping (only English, French, Japanese)
-  const countryLocaleMap = {
-    'US': 'en-US',
-    'GB': 'en-US',
-    'CA': 'en-US',
-    'AU': 'en-US',
-    'FR': 'fr-FR',
-    'BE': 'fr-FR',
-    'CH': 'fr-FR',
-    'JP': 'ja-JP'
-  };
-  
-  // Get preferred locale from country
-  const countryLocale = countryLocaleMap[geoInfo.country] || 'en-US';
-  
-  // Get preferred locale from Accept-Language (only English, French, Japanese)
-  const supportedLanguages = ['en', 'fr', 'ja'];
-  const browserLocale = languages.find(lang => 
-    supportedLanguages.includes(lang.code.split('-')[0])
-  )?.code || 'en-US';
-  
-  // Determine final locale
-  let finalLocale = 'en-US'; // Default fallback
-  
-  if (languages.length > 0) {
-    // Check if browser language matches country locale
-    const countryLang = countryLocale.split('-')[0];
-    const browserLang = browserLocale.split('-')[0];
-    
-    if (countryLang === browserLang) {
-      finalLocale = countryLocale;
-    } else {
-      finalLocale = browserLocale;
-    }
-  } else {
-    finalLocale = countryLocale;
-  }
-  
-  return {
-    locale: finalLocale,
-    language: finalLocale.split('-')[0],
-    country: finalLocale.split('-')[1] || geoInfo.country,
-    browserLanguages: languages,
-    countryLocale: countryLocale
-  };
-}
-
-function getDeviceInfo(request) {
-  const userAgent = request.headers.get('User-Agent') || '';
-  
-  // Device detection
-  const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  const isTablet = /iPad|Android.*Tablet|Windows.*Touch/i.test(userAgent);
-  const isDesktop = !isMobile && !isTablet;
-  
-  // Browser detection
-  const isChrome = /Chrome/i.test(userAgent) && !/Edge|Edg/i.test(userAgent);
-  const isFirefox = /Firefox/i.test(userAgent);
-  const isSafari = /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent);
-  const isEdge = /Edge|Edg/i.test(userAgent);
-  
-  // OS detection
-  const isWindows = /Windows/i.test(userAgent);
-  const isMac = /Macintosh|Mac OS X/i.test(userAgent);
-  const isLinux = /Linux/i.test(userAgent);
-  const isAndroid = /Android/i.test(userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
-  
-  return {
-    isMobile,
-    isTablet,
-    isDesktop,
-    browser: {
-      isChrome,
-      isFirefox,
-      isSafari,
-      isEdge,
-      name: isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isEdge ? 'Edge' : 'Unknown'
-    },
-    os: {
-      isWindows,
-      isMac,
-      isLinux,
-      isAndroid,
-      isIOS,
-      name: isWindows ? 'Windows' : isMac ? 'macOS' : isLinux ? 'Linux' : isAndroid ? 'Android' : isIOS ? 'iOS' : 'Unknown'
-    },
-    userAgent
-  };
-}
+//Geo-Location and Locale Detection
 
 export default async function handler(request, context) {
   const url = new URL(request.url);
@@ -167,72 +51,60 @@ export default async function handler(request, context) {
   const pathname = url.pathname;
   const searchParams = url.searchParams;
   
-  // Get Geo-Location information
-  const geoInfo = getGeoLocation(request);
-  
-  // Detect locale
-  const localeInfo = detectLocale(request, geoInfo);
-  
-  // Get device information
-  const deviceInfo = getDeviceInfo(request);
-  
-  // Log geo and locale information
-  console.log('Geo-Location Info:', geoInfo);
-  console.log('Locale Info:', localeInfo);
-  console.log('Device Info:', deviceInfo);
+  // Geolocation headers
+  const country = request.headers.get("CF-IPCountry") || request.headers.get("visitor-ip-country");
+  const region = request.headers.get("CF-Region") || request.headers.get("visitor-ip-region");
+  const city = request.headers.get("CF-City") || request.headers.get("visitor-ip-city");
+  const clientIP = request.headers.get("x-forwarded-for") || "127.0.0.1";
 
-  // Add geo and locale headers to the request for downstream processing
-  const modifiedRequest = new Request(request, {
-    headers: {
-      ...Object.fromEntries(request.headers.entries()),
-      'X-Geo-Country': geoInfo.country,
-      'X-Geo-Region': geoInfo.region,
-      'X-Geo-City': geoInfo.city,
-      'X-Locale': localeInfo.locale,
-      'X-Language': localeInfo.language
+  console.log(
+    `Visitor Location: Country=${country || "Unknown"}, Region=${region || "Unknown"}, City=${city || "Unknown"}, IP=${clientIP}`
+  );
+
+  const localeMapByCountry = {
+    FR: "fr-fr",
+    JP: "ja-jp",
+    US: "en-us",
+    CA: "en-us",
+    GB: "en-us",
+    AU: "en-us",
+    DE: "en-us",
+    ES: "en-us",
+    IT: "en-us",
+  };
+
+  const currentLang = searchParams.get("lang");
+
+  if (!currentLang) {
+    const acceptLang = request.headers.get("accept-language") || "";
+    const browserLang = acceptLang.split(",")[0].toLowerCase();
+
+    let detectedLocale = "en-us";
+
+    if (country && localeMapByCountry[country]) {
+      detectedLocale = localeMapByCountry[country];
+    } else if (browserLang) {
+      if (browserLang.startsWith("fr")) detectedLocale = "fr-fr";
+      else if (browserLang.startsWith("ja")) detectedLocale = "ja-jp";
+      else if (browserLang.startsWith("en")) detectedLocale = "en-us";
     }
-  });
 
-  // Geo-based content routing (example: redirect to localized versions)
-  if (pathname === '/' || pathname === '/blog') {
-    // Redirect to localized content based on geo-location
-    const localizedPaths = {
-      'FR': '/fr/blog',
-      'JP': '/ja/blog'
-    };
-    
-    const localizedPath = localizedPaths[geoInfo.country];
-    if (localizedPath) {
-      console.log(`Redirecting to localized content: ${localizedPath}`);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          'Location': localizedPath,
-          'Cache-Control': 'no-cache'
-        }
-      });
+    if (detectedLocale !== "en-us") {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.searchParams.set("lang", detectedLocale);
+
+      return Response.redirect(redirectUrl.toString(), 302);
     }
   }
 
-  // Device-specific optimizations
-  if (deviceInfo.isMobile && pathname.startsWith('/blog/')) {
-    // Add mobile-specific query parameters for mobile optimization
-    const mobileUrl = new URL(request.url);
-    mobileUrl.searchParams.set('mobile', 'true');
-    mobileUrl.searchParams.set('device', 'mobile');
-    
-    // For mobile devices, you might want to serve optimized content
-    console.log('Mobile device detected, serving mobile-optimized content');
-  }
-
-
-  // Debug endpoint for geo-location and locale information
+  // Debug endpoint for geo-location information
   if (pathname === '/debug/geo') {
     return new Response(JSON.stringify({
-      geo: geoInfo,
-      locale: localeInfo,
-      device: deviceInfo,
-      headers: Object.fromEntries(request.headers.entries()),
+      country,
+      region,
+      city,
+      clientIP,
+      currentLang,
       timestamp: new Date().toISOString()
     }, null, 2), {
       status: 200,
@@ -245,8 +117,7 @@ export default async function handler(request, context) {
 
   // IP restriction and OAuth SSO for author tools only
   if (pathname.startsWith("/author-tools")) {
-    const clientIP = request.headers.get("CF-Connecting-IP") ||
-                     request.headers.get("x-forwarded-for") ||
+    const clientIP = request.headers.get("x-forwarded-for") ||
                      request.headers.get("x-real-ip") ||
                      "127.0.0.1";
 
@@ -424,8 +295,8 @@ export default async function handler(request, context) {
     },
   ];
 
-  const rewriteResponse = await processRewrites(rewrites, modifiedRequest);
+  const rewriteResponse = await processRewrites(rewrites, request);
   if (rewriteResponse) return rewriteResponse;
 
-  return fetch(modifiedRequest);
+  return fetch(request);
 }
