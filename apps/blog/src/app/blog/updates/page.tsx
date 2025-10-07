@@ -2,6 +2,8 @@ import { getClimatePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
+export const revalidate = 80;
+
 interface BlogEntry {
   title: string;
   url: string;

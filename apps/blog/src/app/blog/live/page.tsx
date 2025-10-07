@@ -2,7 +2,7 @@ import { getFinancePost } from "@/app/lib/contentstack";
 import Image from "next/image";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 interface BlogEntry {
   title: string;
