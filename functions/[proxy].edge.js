@@ -40,7 +40,8 @@ function verifyJWT(token, secret) {
 
 const ALLOWED_IPS = [
   "27.107.90.206",  // Office IP
-  "45.115.187.118"  // Home IP
+  "45.115.187.118",  // Home IP
+  "106.215.180.38"  // Home IP Pune
 ];
 
 //Geo-Location and Locale Detection
