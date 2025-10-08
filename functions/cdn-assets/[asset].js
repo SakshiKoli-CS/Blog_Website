@@ -1,6 +1,6 @@
 export default async function handler(request, response) {
   try {
-    // Basic validation
+    
     if (request.method !== 'GET') {
       return response.status(405).json({ 
         error: 'Method not allowed',
@@ -17,7 +17,7 @@ export default async function handler(request, response) {
       });
     }
 
-    // Security check
+    
     if (asset.includes('..') || asset.includes('/') || asset.includes('\\')) {
       return response.status(400).json({ 
         error: 'Invalid asset path',
@@ -25,10 +25,10 @@ export default async function handler(request, response) {
       });
     }
 
-    // Build the Contentstack Image API URL
+   
     const baseImageUrl = `https://dev11-images.csnonprod.com/v3/assets/bltb07679cca4bcd589/blt37b0ee82b03f0162/${asset}`;
     
-    // Simple fetch without complex error handling
+    
     const imageResponse = await fetch(baseImageUrl, {
       method: 'GET',
       headers: {
@@ -44,10 +44,10 @@ export default async function handler(request, response) {
       });
     }
     
-    // Get the image data
+   
     const imageBuffer = await imageResponse.arrayBuffer();
     
-    // Return the image
+ 
     return response.status(200)
       .setHeader('Content-Type', imageResponse.headers.get('content-type') || 'image/png')
       .setHeader('Cache-Control', 'public, max-age=31536000, immutable')
