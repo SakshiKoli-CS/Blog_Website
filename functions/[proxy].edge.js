@@ -1,6 +1,5 @@
 import { processRewrites } from '../apps/blog/src/app/lib/rewrite.js';
 
-// Simple JWT functions
 function base64UrlDecode(str) {
   str += new Array(5 - (str.length % 4)).join("=");
   return atob(str.replace(/-/g, "+").replace(/_/g, "/"));
@@ -211,7 +210,6 @@ export default async function handler(request, context) {
     });
   }
 
-
   // Single redirect (works on ALL domains)
   if (pathname === "/blog/neuralink") {
     return new Response(null, {
@@ -223,7 +221,7 @@ export default async function handler(request, context) {
     });
   }
 
-  // Password protection for preview domain only
+  // Password protection for preview domain only 
   if (hostname.includes("blogwebsite-preview.devcontentstackapps.com")) {
     const validUsername = context.env?.PREVIEW_USERNAME;
     const validPassword = context.env?.PREVIEW_PASSWORD;
@@ -235,12 +233,12 @@ export default async function handler(request, context) {
         const [username, password] = credentials.split(":");
 
         if (username === validUsername && password === validPassword) {
-          
         } else {
+          
           return new Response("Unauthorized", {
             status: 401,
             headers: {
-              "WWW-Authenticate": `Basic realm="Preview Access ${Date.now()}"`,
+              "WWW-Authenticate": `Basic realm="Preview-${Math.floor(Date.now()/300000)}"`, 
               "Content-Type": "text/plain",
               "Cache-Control": "no-cache, no-store, must-revalidate",
               "Pragma": "no-cache",
@@ -252,7 +250,7 @@ export default async function handler(request, context) {
         return new Response("Unauthorized", {
           status: 401,
           headers: {
-            "WWW-Authenticate": `Basic realm="Preview Access ${Date.now()}"`,
+            "WWW-Authenticate": `Basic realm="Preview-${Math.floor(Date.now()/300000)}"`,
             "Content-Type": "text/plain",
             "Cache-Control": "no-cache, no-store, must-revalidate",
             "Pragma": "no-cache",
@@ -264,7 +262,7 @@ export default async function handler(request, context) {
       return new Response("Unauthorized", {
         status: 401,
         headers: {
-          "WWW-Authenticate": `Basic realm="Preview Access ${Date.now()}"`,
+          "WWW-Authenticate": `Basic realm="Preview-${Math.floor(Date.now()/300000)}"`,
           "Content-Type": "text/plain",
           "Cache-Control": "no-cache, no-store, must-revalidate",
           "Pragma": "no-cache",
