@@ -25,7 +25,7 @@ export default async function ClassicsPage({
   const entry: BlogEntry | null = await getHealthcarePost(locale);
 
   if (!entry) {
-    return <p className="text-center py-10 text-red-500">No Healthcare post found.</p>;
+    return <p className="text-center py-10 text-red-500">Noooo Healthcare post found.</p>;
   }
 
   return (
